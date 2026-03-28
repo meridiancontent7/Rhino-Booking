@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Stay — Rhino Watch Safari Lodge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --earth:    #2b2015;
+  --bark:     #5a3e28;
+  --sand:     #c9a96e;
+  --dust:     #e8dcc8;
+  --cream:    #f6f0e4;
+  --savanna:  #7a9e4e;
+  --savanna-d:#567030;
+  --rust:     #b04f28;
+  --white:    #fdfaf5;
+  --shadow:   rgba(43,32,21,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  background-color: var(--cream);
+  color: var(--earth);
+  min-height: 100vh;
+}
+
+/* ─── Hero Header ────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, var(--earth) 0%, var(--bark) 60%, #3d2c10 100%);
+  color: var(--dust);
+  padding: 48px 40px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,169,110,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 90%, rgba(122,158,78,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 860px; margin: 0 auto; }
+.lodge-label {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--sand);
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.hero h1 em { font-style: italic; color: var(--sand); }
+.hero-sub {
+  font-size: 14px;
+  color: var(--dust);
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+}
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(201,169,110,0.25);
+}
+.trust-badges span { font-size: 12px; color: var(--dust); opacity: 0.8; }
+
+/* ─── Main Container ─────────────────────────────────────────── */
+.container { max-width: 860px; margin: 0 auto; padding: 36px 20px 60px; }
+
+/* ─── Step Labels ────────────────────────────────────────────── */
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--bark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--sand);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.step-num {
+  width: 26px; height: 26px;
+  background: var(--sand);
+  color: var(--earth);
+  border-radius: 50%;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid rgba(90,62,40,0.14);
+  border-radius: 10px;
+  padding: 28px;
+  box-shadow: 0 4px 24px var(--shadow);
+  margin-bottom: 32px;
+}
+
+/* ─── Date Picker ────────────────────────────────────────────── */
+.date-row { display: flex; gap: 18px; flex-wrap: wrap; }
+.field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+.field label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--bark);
+  font-weight: 500;
+}
+.field input, .field select {
+  border: 1px solid rgba(90,62,40,0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  color: var(--earth);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { border-color: var(--sand); }
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 6px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.1s, opacity 0.2s;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--bark); color: var(--cream); }
+.btn-primary:hover:not(:disabled) { background: var(--earth); }
+.btn-book { background: var(--savanna); color: #fff; width: 100%; justify-content: center; margin-top: 4px; }
+.btn-book:hover:not(:disabled) { background: var(--savanna-d); }
+.btn-pay { background: var(--rust); color: #fff; padding: 14px 36px; font-size: 14px; }
+.btn-pay:hover:not(:disabled) { background: #8c3c1c; }
+
+/* ─── Notices ────────────────────────────────────────────────── */
+.notice { padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
+.notice-error  { background: #fdecea; color: #8c1a12; border: 1px solid #f5c6c2; }
+.notice-warn   { background: #fef8ec; color: #7a4e10; border: 1px solid #f0d89a; }
+.notice-success{ background: #edf6e8; color: #2e5e15; border: 1px solid #b5d99a; }
+
+/* ─── Residency ──────────────────────────────────────────────── */
+.residency-intro { font-size: 13px; color: #6a5a46; margin-bottom: 20px; line-height: 1.6; }
+.residency-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.residency-option {
+  flex: 1; min-width: 140px;
+  border: 2px solid rgba(90,62,40,0.15);
+  border-radius: 10px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.1s;
+  background: var(--cream);
+}
+.residency-option:hover { border-color: var(--sand); background: var(--white); }
+.residency-option.selected { border-color: var(--bark); background: var(--white); box-shadow: 0 4px 16px var(--shadow); }
+.residency-option:active { transform: scale(0.98); }
+.residency-icon { font-size: 28px; margin-bottom: 8px; }
+.residency-label { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--bark); margin-bottom: 4px; }
+.residency-sub { font-size: 12px; color: #8a7a66; letter-spacing: 0.5px; }
+
+/* ─── Room Cards ─────────────────────────────────────────────── */
+#roomResults { margin-bottom: 32px; }
+.category-header {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sand);
+  background: var(--bark);
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+.room-card {
+  background: var(--white);
+  border: 1px solid rgba(90,62,40,0.14);
+  border-radius: 10px;
+  padding: 22px;
+  box-shadow: 0 2px 14px var(--shadow);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.room-card:hover { border-color: var(--sand); box-shadow: 0 4px 22px var(--shadow); }
+.room-type { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--bark); margin-bottom: 4px; }
+.room-nights { font-size: 12px; color: #7a6a56; letter-spacing: 0.5px; }
+.room-price { text-align: right; }
+.room-unavailable { opacity: 0.45; background: #f0ece4; }
+
+/* ─── Occupancy ──────────────────────────────────────────────── */
+.occ-options { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.occ-option {
+  flex: 1; min-width: 130px;
+  background: var(--cream);
+  border: 1px solid rgba(90,62,40,0.15);
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.occ-option:hover { border-color: var(--sand); background: var(--white); }
+.occ-disabled { opacity: 0.4; pointer-events: none; }
+.occ-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--bark); font-weight: 500; margin-bottom: 4px; }
+.occ-price { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--bark); margin-bottom: 2px; }
+.occ-total { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--earth); margin-bottom: 8px; }
+.occ-note { font-family: 'Jost', sans-serif; font-size: 10px; color: #8a7a66; font-weight: 300; }
+.occ-divider { width: 1px; background: rgba(90,62,40,0.12); align-self: stretch; }
+.btn-book-sm {
+  display: inline-flex; align-items: center;
+  padding: 7px 16px; border-radius: 5px;
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; border: none;
+  background: var(--savanna); color: #fff;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+.btn-book-sm:hover { background: var(--savanna-d); }
+
+/* ─── Availability Badges ────────────────────────────────────── */
+.avail-badge { display: inline-block; margin-top: 6px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; letter-spacing: 0.5px; }
+.avail-ok   { background: #edf6e8; color: #2e5e15; border: 1px solid #b5d99a; }
+.avail-low  { background: #fef8ec; color: #7a4e10; border: 1px solid #f0d89a; }
+.avail-none { background: #fdecea; color: #8c1a12; border: 1px solid #f5c6c2; }
+
+/* ─── Booking Form ───────────────────────────────────────────── */
+#bookingSection { display: none; }
+#bookingSection .selected-room-info {
+  background: linear-gradient(135deg, var(--earth), var(--bark));
+  color: var(--dust);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  font-size: 14px;
+}
+#bookingSection .selected-room-info strong {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--sand);
+  display: block;
+  margin-bottom: 4px;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ─── Payment ────────────────────────────────────────────────── */
+#paymentSection { display: none; }
+.payment-box {
+  background: var(--white);
+  border: 1px solid rgba(90,62,40,0.14);
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 4px 24px var(--shadow);
+  text-align: center;
+}
+.payment-box .icon { font-size: 40px; margin-bottom: 14px; }
+.payment-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--bark); margin-bottom: 8px; }
+.payment-box p { font-size: 13px; color: #6a5a46; line-height: 1.7; margin-bottom: 24px; }
+.payment-total { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--bark); margin-bottom: 6px; }
+.payment-breakdown { font-size: 12px; color: #8a7a66; margin-bottom: 24px; }
+
+/* ─── T&C ────────────────────────────────────────────────────── */
+.tc-wrapper { margin: 0 auto 24px; max-width: 460px; text-align: left; }
+.tc-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 13px; color: var(--bark); line-height: 1.5; }
+.tc-label input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; accent-color: var(--bark); flex-shrink: 0; cursor: pointer; }
+.tc-label a { color: var(--bark); font-weight: 500; text-decoration: underline; }
+.tc-box { background: var(--cream); border: 1px solid var(--sand); border-radius: 8px; padding: 16px 18px; margin-top: 12px; max-height: 220px; overflow-y: auto; }
+.tc-box h4 { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--bark); margin: 12px 0 4px; }
+.tc-box h4:first-child { margin-top: 0; }
+.tc-box p { font-size: 12px; color: #6a5a46; line-height: 1.7; margin: 0; }
+
+/* ─── Confirmation ───────────────────────────────────────────── */
+#confirmSection { display: none; }
+.confirm-box { background: var(--white); border: 2px solid var(--savanna); border-radius: 10px; padding: 36px; box-shadow: 0 4px 24px var(--shadow); text-align: center; }
+.confirm-box .icon { font-size: 48px; margin-bottom: 16px; }
+.confirm-box h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--savanna-d); margin-bottom: 10px; }
+.confirm-box p { font-size: 14px; color: #5a4a36; line-height: 1.8; }
+.confirm-ref { display: inline-block; margin-top: 14px; background: var(--cream); border: 1px solid var(--sand); padding: 8px 18px; border-radius: 20px; font-size: 13px; color: var(--bark); font-weight: 500; letter-spacing: 1px; }
+
+/* ─── Spinner ────────────────────────────────────────────────── */
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .hero { padding: 36px 20px 40px; }
+}
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="lodge-label">Kenya &middot; Laikipia Plateau</p>
+    <h1>Rhino Watch<br><em>Safari Lodge</em></h1>
+    <p class="hero-sub">Reserve your stay in the African wilderness</p>
+    <div class="trust-badges">
+      <span>🦏 Full Board included</span>
+      <span>✦ Resident &amp; Non-Resident rates</span>
+      <span>🌿 Laikipia Wildlife Reserve</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- STEP 1 — Residency -->
+  <div class="step-title"><span class="step-num">1</span> Select Your Residency Status</div>
+  <div class="card" id="residencyCard">
+    <p class="residency-intro">Kenyan residents qualify for special resident rates in KES. International guests are quoted in USD.</p>
+    <div class="residency-row">
+      <div class="residency-option" id="optResident" onclick="selectResidency('resident')">
+        <div class="residency-icon">🇰🇪</div>
+        <div class="residency-label">Kenyan Resident</div>
+        <div class="residency-sub">Prices in KES</div>
+      </div>
+      <div class="residency-option" id="optNonResident" onclick="selectResidency('nonresident')">
+        <div class="residency-icon">🌍</div>
+        <div class="residency-label">Non-Resident</div>
+        <div class="residency-sub">Prices in USD</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — Dates -->
+  <div id="dateSection" style="display:none;">
+    <div class="step-title"><span class="step-num">2</span> Choose Your Dates</div>
+    <div class="card" id="dateCard">
+      <div id="dateError"></div>
+      <div class="date-row">
+        <div class="field">
+          <label for="checkin">Check-in</label>
+          <input type="date" id="checkin" />
+        </div>
+        <div class="field">
+          <label for="checkout">Check-out</label>
+          <input type="date" id="checkout" />
+        </div>
+        <div class="field" style="justify-content:flex-end;align-items:flex-end;">
+          <button class="btn btn-primary" onclick="checkAvailability()" id="checkBtn">Check Availability</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 — Rooms -->
+  <div id="roomResults"></div>
+
+  <!-- STEP 4 — Guest Details -->
+  <div id="bookingSection">
+    <div class="step-title"><span class="step-num">4</span> Guest Details</div>
+    <div class="card">
+      <div id="selectedRoomInfo" class="selected-room-info"></div>
+      <div id="formError"></div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="guestName">Full Name</label>
+          <input type="text" id="guestName" placeholder="Jane Doe" />
+        </div>
+        <div class="field">
+          <label for="guestPhone">Phone / WhatsApp</label>
+          <input type="text" id="guestPhone" placeholder="+254 700 000000" />
+        </div>
+        <div class="field">
+          <label for="guestEmail">Email Address</label>
+          <input type="email" id="guestEmail" placeholder="jane@example.com" />
+        </div>
+        <div class="field">
+          <label for="guestId" id="idLabel">ID / Passport Number</label>
+          <input type="text" id="guestId" placeholder="e.g. 12345678" />
+        </div>
+      </div>
+      <br/>
+      <button class="btn btn-primary" onclick="submitBooking()" id="submitBtn">Reserve Room</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 — Payment -->
+  <div id="paymentSection">
+    <div class="step-title"><span class="step-num">5</span> Complete Payment</div>
+    <div class="payment-box">
+      <div class="icon">🏕️</div>
+      <h3>Your room is on hold</h3>
+      <p>Please review our Terms &amp; Conditions and complete payment to confirm your booking.<br/>Your hold expires in 30 minutes.</p>
+      <div class="payment-total" id="payTotal">—</div>
+      <div class="payment-breakdown" id="payBreakdown"></div>
+      <div class="tc-wrapper">
+        <label class="tc-label">
+          <input type="checkbox" id="tcCheckbox" />
+          <span>I have read and agree to the <a href="#" onclick="toggleTC(event)">Terms &amp; Conditions</a></span>
+        </label>
+        <div id="tcError"></div>
+        <div id="tcText" style="display:none;">
+          <div class="tc-box">
+            <h4>1. General</h4>
+            <p>Rates are quoted in the currency shown and are inclusive of VAT. Rates are subject to change without further notice.</p>
+            <h4>2. Check-in &amp; Check-out</h4>
+            <p>Check-in: 2:00 PM &middot; Check-out: 10:00 AM. Late check-out until 6:00 PM is subject to availability at 50% of the room rate.</p>
+            <h4>3. Child Policy</h4>
+            <p>Children under 3 sharing with 2 adults: free. Children 4–11 sharing with 2 adults: 50% of adult DBL rate. Children 4–11 sharing with 1 adult: 75% of adult DBL rate.</p>
+            <h4>4. Payment</h4>
+            <p>A 20% non-refundable deposit is required to confirm a booking. The remaining balance must be received no later than 21 days prior to arrival.</p>
+            <h4>5. Cancellation Policy</h4>
+            <p>Up to 30 days before arrival: 30% charge. 29 days or fewer before arrival: 100% charge. No-shows will be charged in full.</p>
+            <h4>6. Festive Season Surcharge</h4>
+            <p>A compulsory surcharge applies on Christmas (24–25 Dec), New Year's Eve and New Year's Day (31 Dec–1 Jan), and Easter Sunday and Monday.</p>
+            <h4>7. Groups</h4>
+            <p>1 person travels free (half double rate) for every 20 full paying guests.</p>
+            <h4>8. Governing Law</h4>
+            <p>These terms are governed by the laws of Kenya.</p>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-pay" onclick="completePayment()" id="payBtn">Confirm Booking</button>
+    </div>
+  </div>
+
+  <!-- STEP 6 — Confirmation -->
+  <div id="confirmSection">
+    <div class="confirm-box">
+      <div class="icon">✅</div>
+      <h3>Booking Confirmed</h3>
+      <p id="confirmMsg"></p>
+      <span class="confirm-ref" id="confirmRef"></span>
+      <br/><br/>
+      <p style="font-size:13px;color:#6a5a46;">Questions? Email <a href="mailto:reservations@rhinowatchlodge.com" style="color:var(--bark)">reservations@rhinowatchlodge.com</a> or call <a href="tel:+254751555669" style="color:var(--bark)">+254 751 555 669</a></p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+var SUPABASE_URL = "https://fnzgpdhhybpkhfyanqtj.supabase.co";
+var API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuemdwZGhoeWJwa2hmeWFucXRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyODI1ODYsImV4cCI6MjA4ODg1ODU4Nn0._2ouYZglVPMDGbNNCftcMuebQ9-WqEUlnZ9a9YTNDyo";
+var N8N_WEBHOOK = "https://n8n.srv1432046.hstgr.cloud/webhook/rhino-booking";
+var HOLD_EXPIRY_MINUTES = 30;
+
+var state = {
+  residency: null,
+  occupancy: null,
+  checkinDate: null,
+  checkoutDate: null,
+  nights: 0,
+  selectedRoomId: null,
+  selectedRoomType: null,
+  selectedRoomPrice: null,
+  selectedCurrency: null,
+  currentBookingId: null,
+  guestName: null,
+  guestEmail: null,
+  guestPhone: null
+};
+
+/* ── Supabase REST Helper ────────────────────────────────────── */
+function supabaseFetch(path, options) {
+  options = options || {};
+  var url = SUPABASE_URL + "/rest/v1/" + path;
+  return fetch(url, Object.assign({}, options, {
+    headers: Object.assign({
+      "apikey": API_KEY,
+      "Authorization": "Bearer " + API_KEY,
+      "Content-Type": "application/json",
+      "Prefer": options.prefer || "return=representation"
+    }, options.headers || {})
+  })).then(function(response) {
+    if (response.status === 204) return null;
+    return response.json().then(function(data) {
+      if (!response.ok) throw new Error(data && data.message ? data.message : "HTTP " + response.status);
+      return data;
+    });
+  });
+}
+
+/* ── Step 1: Residency ───────────────────────────────────────── */
+function selectResidency(type) {
+  state.residency = type;
+  document.getElementById("optResident").classList.toggle("selected", type === "resident");
+  document.getElementById("optNonResident").classList.toggle("selected", type === "nonresident");
+  document.getElementById("idLabel").textContent = type === "resident" ? "National ID Number" : "Passport Number";
+  document.getElementById("guestId").placeholder = type === "resident" ? "e.g. 12345678" : "e.g. A12345678";
+  showEl("dateSection");
+  document.getElementById("dateSection").scrollIntoView({ behavior: "smooth" });
+}
+
+/* ── Step 2: Availability ────────────────────────────────────── */
+function checkAvailability() {
+  clearEl("dateError");
+  clearEl("roomResults");
+  hideEl("bookingSection");
+  hideEl("paymentSection");
+  hideEl("confirmSection");
+
+  if (!state.residency) { showError("dateError", "Please select your residency status first."); return; }
+
+  state.checkinDate = document.getElementById("checkin").value;
+  state.checkoutDate = document.getElementById("checkout").value;
+
+  if (!state.checkinDate || !state.checkoutDate) { showError("dateError", "Please select both check-in and check-out dates."); return; }
+
+  state.nights = daysBetween(state.checkinDate, state.checkoutDate);
+  if (state.nights < 1) { showError("dateError", "Check-out must be at least one night after check-in."); return; }
+
+  var btn = document.getElementById("checkBtn");
+  setLoading(btn, "Checking...");
+
+  expireOldHolds().then(function() {
+    return Promise.all([fetchAllRooms(), fetchConflictingBookings(state.checkinDate, state.checkoutDate)]);
+  }).then(function(results) {
+    var rooms = results[0];
+    var confirmedBookings = results[1];
+    var confirmedCountByRoom = {};
+    (confirmedBookings || []).forEach(function(b) {
+      confirmedCountByRoom[b.room_id] = (confirmedCountByRoom[b.room_id] || 0) + 1;
+    });
+    renderRooms(rooms.map(function(room) {
+      return Object.assign({}, room, { remaining: room.total_rooms - (confirmedCountByRoom[room.id] || 0) });
+    }));
+  }).catch(function(err) {
+    showError("dateError", "Could not load availability: " + err.message);
+  }).finally(function() {
+    resetBtn(btn, "Check Availability");
+  });
+}
+
+function fetchAllRooms() {
+  return supabaseFetch("rooms?select=id,room_type,room_category,max_occupancy,total_rooms,resident_sgl_price,resident_dbl_price,nonresident_sgl_price,nonresident_dbl_price,resident_currency,nonresident_currency");
+}
+
+function fetchConflictingBookings(checkin, checkout) {
+  return supabaseFetch("bookings?select=room_id&status=eq.confirmed&check_in=lt." + checkout + "&check_out=gt." + checkin);
+}
+
+/* ── Step 3: Render Rooms ────────────────────────────────────── */
+function renderRooms(rooms) {
+  var container = document.getElementById("roomResults");
+  var isResident = state.residency === "resident";
+
+  if (!rooms || rooms.length === 0) {
+    container.innerHTML = '<div class="notice notice-warn">No rooms found. Please contact the lodge directly.</div>';
+    return;
+  }
+
+  var categories = { standard: [], family: [], exclusive: [] };
+  rooms.forEach(function(room) {
+    var cat = room.room_category || "standard";
+    if (categories[cat]) categories[cat].push(room);
+    else categories.standard.push(room);
+  });
+
+  var categoryLabels = { standard: "Standard Rooms", family: "Family Units", exclusive: "Exclusive Wing" };
+  var html = '<div class="step-title"><span class="step-num">3</span> Available Rooms</div>';
+
+  Object.keys(categories).forEach(function(cat) {
+    var catRooms = categories[cat];
+    if (catRooms.length === 0) return;
+    html += '<div class="category-header">' + categoryLabels[cat] + '</div>';
+    catRooms.forEach(function(room) {
+      var available = room.remaining > 0;
+      var sglPrice = isResident ? room.resident_sgl_price : room.nonresident_sgl_price;
+      var dblPrice = isResident ? room.resident_dbl_price : room.nonresident_dbl_price;
+      var currency = isResident ? room.resident_currency : room.nonresident_currency;
+      var isFamily = cat === "family";
+      var cardClass = available ? "room-card" : "room-card room-unavailable";
+
+      var availLabel = !available ?
+        '<span class="avail-badge avail-none">Fully booked</span>' :
+        room.remaining <= 2 ?
+        '<span class="avail-badge avail-low">Only ' + room.remaining + ' left</span>' :
+        '<span class="avail-badge avail-ok">' + room.remaining + ' available</span>';
+
+      var priceBlock = isFamily ?
+        '<div class="occ-options"><div class="occ-total">' + currency + ' ' + Number(dblPrice).toLocaleString() + ' <span class="occ-note">per unit / night</span></div></div>' +
+        (available ? '<button class="btn btn-book" onclick="openBooking(' + room.id + ', \'' + room.room_type + '\', ' + dblPrice + ', \'' + currency + '\', \'unit\')">Book Now</button>' : '<button class="btn btn-book" disabled>Unavailable</button>') :
+        '<div class="occ-options">' +
+          '<div class="occ-option ' + (available ? "" : "occ-disabled") + '">' +
+            '<div class="occ-label">Single occupancy</div>' +
+            '<div class="occ-price">' + currency + ' ' + Number(sglPrice).toLocaleString() + '<span class="occ-note">/person/night</span></div>' +
+            '<div class="occ-total">' + currency + ' ' + (sglPrice * state.nights).toLocaleString() + ' <span class="occ-note">total</span></div>' +
+            (available ? '<button class="btn btn-book-sm" onclick="openBooking(' + room.id + ', \'' + room.room_type + '\', ' + sglPrice + ', \'' + currency + '\', \'single\')">Select</button>' : "") +
+          '</div>' +
+          '<div class="occ-divider"></div>' +
+          '<div class="occ-option ' + (available ? "" : "occ-disabled") + '">' +
+            '<div class="occ-label">Double occupancy <span class="occ-note">(per person)</span></div>' +
+            '<div class="occ-price">' + currency + ' ' + Number(dblPrice).toLocaleString() + '<span class="occ-note">/person/night</span></div>' +
+            '<div class="occ-total">' + currency + ' ' + (dblPrice * state.nights).toLocaleString() + ' <span class="occ-note">total pp</span></div>' +
+            (available ? '<button class="btn btn-book-sm" onclick="openBooking(' + room.id + ', \'' + room.room_type + '\', ' + dblPrice + ', \'' + currency + '\', \'double\')">Select</button>' : "") +
+          '</div>' +
+        '</div>' +
+        (!available ? '<button class="btn btn-book" disabled>Unavailable</button>' : "");
+
+      html += '<div class="' + cardClass + '">' +
+        '<div class="room-info">' +
+          '<div class="room-type">' + room.room_type + '</div>' +
+          '<div class="room-nights">' + state.nights + ' night' + (state.nights > 1 ? "s" : "") + ' &middot; ' + state.checkinDate + ' to ' + state.checkoutDate + '</div>' +
+          availLabel +
+        '</div>' +
+        '<div class="room-price">' + priceBlock + '</div>' +
+      '</div>';
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+/* ── Step 4: Open Booking Form ───────────────────────────────── */
+function openBooking(roomId, roomType, price, currency, occupancy) {
+  state.selectedRoomId = roomId;
+  state.selectedRoomType = roomType;
+  state.selectedRoomPrice = price;
+  state.selectedCurrency = currency;
+  state.occupancy = occupancy;
+  clearEl("formError");
+
+  var occupancyLabel = occupancy === "single" ? "Single occupancy" :
+    occupancy === "double" ? "Double occupancy (per person)" : "Per unit";
+  var total = (price * state.nights).toLocaleString();
+
+  document.getElementById("selectedRoomInfo").innerHTML =
+    "<strong>" + roomType + "</strong>" +
+    state.nights + " night" + (state.nights > 1 ? "s" : "") + " &middot; " + occupancyLabel + " &middot; " +
+    currency + " " + Number(price).toLocaleString() + "/night &middot; " +
+    "<b>Total: " + currency + " " + total + "</b>";
+
+  showEl("bookingSection");
+  document.getElementById("bookingSection").scrollIntoView({ behavior: "smooth" });
+}
+
+/* ── Step 5: Submit Booking ──────────────────────────────────── */
+function submitBooking() {
+  clearEl("formError");
+  var name = document.getElementById("guestName").value.trim();
+  var email = document.getElementById("guestEmail").value.trim();
+  var phone = document.getElementById("guestPhone").value.trim();
+  var guestId = document.getElementById("guestId").value.trim();
+
+  if (!name || !email || !phone || !guestId) { showError("formError", "Please fill in all fields before proceeding."); return; }
+  if (!/^\S+@\S+\.\S+$/.test(email)) { showError("formError", "Please enter a valid email address."); return; }
+
+  state.guestName = name;
+  state.guestEmail = email;
+  state.guestPhone = phone;
+
+  var btn = document.getElementById("submitBtn");
+  setLoading(btn, "Reserving...");
+
+  Promise.all([fetchAllRooms(), fetchConflictingBookings(state.checkinDate, state.checkoutDate)]).then(function(results) {
+    var rooms = results[0];
+    var conflicts = results[1];
+    var selectedRoom = rooms.find(function(r) { return r.id === state.selectedRoomId; });
+    var confirmedCount = (conflicts || []).filter(function(b) { return b.room_id === state.selectedRoomId; }).length;
+    var remaining = selectedRoom ? selectedRoom.total_rooms - confirmedCount : 0;
+
+    if (remaining < 1) { showError("formError", "Sorry — this room just became fully booked. Please choose another."); return; }
+
+    return supabaseFetch("bookings", {
+      method: "POST",
+      body: JSON.stringify({
+        room_id: state.selectedRoomId,
+        guest_name: name,
+        email: email,
+        phone: phone,
+        guest_id: guestId,
+        residency: state.residency,
+        occupancy: state.occupancy,
+        currency: state.selectedCurrency,
+        price_paid: state.selectedRoomPrice * state.nights,
+        check_in: state.checkinDate,
+        check_out: state.checkoutDate,
+        status: "hold"
+      })
+    });
+  }).then(function(result) {
+    if (!result) return;
+    state.currentBookingId = result[0].id;
+    hideEl("bookingSection");
+    hideEl("roomResults");
+    showPaymentStep();
+  }).catch(function(err) {
+    showError("formError", "Booking failed: " + err.message);
+  }).finally(function() {
+    resetBtn(btn, "Reserve Room");
+  });
+}
+
+/* ── Step 6: Confirm Payment ─────────────────────────────────── */
+function completePayment() {
+  if (!state.currentBookingId) { alert("No active booking found. Please start over."); return; }
+  if (!document.getElementById("tcCheckbox").checked) { showError("tcError", "Please read and accept the Terms & Conditions."); return; }
+
+  var btn = document.getElementById("payBtn");
+  setLoading(btn, "Confirming...");
+
+  supabaseFetch("bookings?id=eq." + state.currentBookingId, {
+    method: "PATCH",
+    prefer: "return=minimal",
+    body: JSON.stringify({ status: "confirmed" })
+  }).then(function() {
+    // Fire n8n webhook for email confirmations
+    return fetch(N8N_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "booking_confirmed",
+        bookingId: state.currentBookingId,
+        roomType: state.selectedRoomType,
+        checkin: state.checkinDate,
+        checkout: state.checkoutDate,
+        nights: state.nights,
+        occupancy: state.occupancy,
+        residency: state.residency,
+        currency: state.selectedCurrency,
+        totalPrice: state.selectedRoomPrice * state.nights,
+        guestName: state.guestName,
+        email: state.guestEmail,
+        phone: state.guestPhone
+      })
+    });
+  }).then(function() {
+    hideEl("paymentSection");
+    showConfirmationStep();
+  }).catch(function(err) {
+    document.getElementById("paymentSection").insertAdjacentHTML("afterbegin",
+      '<div class="notice notice-error">Something went wrong. Please contact us directly: reservations@rhinowatchlodge.com</div>');
+  }).finally(function() {
+    resetBtn(btn, "Confirm Booking");
+  });
+}
+
+/* ── Hold Expiry ─────────────────────────────────────────────── */
+function expireOldHolds() {
+  var cutoff = new Date(Date.now() - HOLD_EXPIRY_MINUTES * 60 * 1000).toISOString();
+  return supabaseFetch("bookings?status=eq.hold&created_at=lt." + cutoff, {
+    method: "PATCH",
+    prefer: "return=minimal",
+    body: JSON.stringify({ status: "cancelled" })
+  }).catch(function(err) { console.warn("Hold expiry sweep skipped:", err.message); });
+}
+
+/* ── UI Helpers ──────────────────────────────────────────────── */
+function showPaymentStep() {
+  var currency = state.selectedCurrency;
+  var total = (state.selectedRoomPrice * state.nights).toLocaleString();
+  var occLabel = state.occupancy === "single" ? "Single occupancy" :
+    state.occupancy === "double" ? "Double occupancy (per person)" : "Per unit";
+
+  document.getElementById("payTotal").textContent = currency + " " + total;
+  document.getElementById("payBreakdown").textContent =
+    state.selectedRoomType + " \u00b7 " + occLabel + " \u00b7 " +
+    state.nights + " night" + (state.nights > 1 ? "s" : "") + " @ " +
+    currency + " " + Number(state.selectedRoomPrice).toLocaleString() + "/night";
+  document.getElementById("tcCheckbox").checked = false;
+  clearEl("tcError");
+  showEl("paymentSection");
+  document.getElementById("paymentSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function showConfirmationStep() {
+  var currency = state.selectedCurrency;
+  var total = (state.selectedRoomPrice * state.nights).toLocaleString();
+  var occLabel = state.occupancy === "single" ? "Single occupancy" :
+    state.occupancy === "double" ? "Double occupancy (per person)" : "Per unit";
+
+  document.getElementById("confirmMsg").textContent =
+    "Thank you " + state.guestName + "! Your booking for " + state.selectedRoomType +
+    " (" + occLabel + ") from " + state.checkinDate + " to " + state.checkoutDate +
+    " is confirmed. Total: " + currency + " " + total +
+    ". A confirmation email has been sent to " + state.guestEmail + ".";
+  document.getElementById("confirmRef").textContent = "Booking Ref: RW-" + String(state.currentBookingId).padStart(6, "0");
+  showEl("confirmSection");
+  document.getElementById("confirmSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function toggleTC(e) {
+  e.preventDefault();
+  var box = document.getElementById("tcText");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+function showEl(id) { var el = document.getElementById(id); if (el) el.style.display = "block"; }
+function hideEl(id) { var el = document.getElementById(id); if (el) el.style.display = "none"; }
+function clearEl(id) { var el = document.getElementById(id); if (el) el.innerHTML = ""; }
+function showError(containerId, msg) { document.getElementById(containerId).innerHTML = '<div class="notice notice-error">' + msg + '</div>'; }
+function setLoading(btn, label) { btn.innerHTML = '<span class="spinner"></span> ' + label; btn.disabled = true; }
+function resetBtn(btn, label) { btn.innerHTML = label; btn.disabled = false; }
+function daysBetween(a, b) { return Math.round((new Date(b) - new Date(a)) / 86400000); }
+
+/* ── Init ────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", function() {
+  var today = new Date().toISOString().split("T")[0];
+  var checkinEl = document.getElementById("checkin");
+  var checkoutEl = document.getElementById("checkout");
+  if (checkinEl) checkinEl.min = today;
+  if (checkoutEl) checkoutEl.min = today;
+  if (checkinEl) {
+    checkinEl.addEventListener("change", function() {
+      var next = new Date(this.value);
+      next.setDate(next.getDate() + 1);
+      checkoutEl.min = next.toISOString().split("T")[0];
+      checkoutEl.value = "";
+    });
+  }
+});
+</script>
+</body>
+</html>
